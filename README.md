@@ -37,7 +37,7 @@ Stappenplan: <br>
 
 Normaal kan je vanaf dan aan je spring boot applicatie, de url van de spring boot applicatie zie je binnen de Container App in de Azure Portal. Hier kan je ook rechtstreeks aan de logs.
 
-Voor het verder automatiseren van updates:
+Voor het verder automatiseren van updates: <br>
 1: az containerapp update --name <app-name> --resource-group <resource-group> --image <acr-name>.azurecr.io/<image-name> --registry-server <acr-name>.azurecr.io --registry-username <acr-user> --registry-password <acr-pwd>
 
 ? Kan je gebruik maken van docker ? Ja, je kan ook je image uploaden naar hub.docker.io en daarmee connecteren. Deze oplossing is puur Azure gericht en zonder Docker. <br>
