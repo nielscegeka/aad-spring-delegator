@@ -27,7 +27,9 @@
         <url/>
     </scm>
     <properties>
-        <java.version>21</java.version>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
     <dependencies>
         <dependency>
@@ -45,8 +47,18 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
+    <packaging>jar</packaging>
     <build>
         <plugins>
             <plugin>
@@ -71,6 +83,73 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.microsoft.azure</groupId>
+                <artifactId>azure-webapp-maven-plugin</artifactId>
+                <version>2.8.0</version>
+                <configuration>
+                    <resourceGroup>${AZURE_RG}</resourceGroup>
+                    <appName>${AZURE_APP}</appName>
+                    <region>northeurope</region>
+
+                    <appServicePlanName>${AZURE_PLAN}</appServicePlanName>
+                    <appServicePlanResourceGroup>${AZURE_PLAN_RG}</appServicePlanResourceGroup>
+
+                    <sku>
+                        <tier>Basic</tier>
+                        <size>B1</size>
+                    </sku>
+
+                    <runtime>
+                        <os>linux</os>
+                        <javaVersion>17</javaVersion>
+                        <webContainer>java 17</webContainer>
+                    </runtime>
+                    <appSettings>
+                        <property>
+                            <name>image.function.url</name>
+                            <value>https://function-name.azurewebsites.net/api/endpoint</value>
+                        </property>
+                        <property>
+                            <name>image.function.code</name>
+                            <value>your-function-code</value>
+                        </property>
+                    </appSettings>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.4.0</version>
+                <configuration>
+                    <from>
+                        <image>eclipse-temurin:17-jre</image>
+                    </from>
+                    <to>
+                        <image>acr-name.azurecr.io/image-name:latest</image>
+                        <auth>
+                            <username>user</username>
+                            <password>pwd</password>
+                        </auth>
+                    </to>
+                    <container>
+                        <ports>
+                            <port>8080</port>
+                        </ports>
+                        <environment>
+                            <image.function.url>https://function-name.azurewebsites.net/api/endpoint</image.function.url>
+                            <image.function.code>your-function-code</image.function.code>
+                        </environment>
+                    </container>
                 </configuration>
             </plugin>
         </plugins>
