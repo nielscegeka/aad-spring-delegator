@@ -5,7 +5,7 @@ Deze functions gebruiken hun eigen interne keuken voor het opzoeken via Artifici
 Dit is een Spring Boot API die gaat opzoeken als de permissies matchen en de resultaten opslaan voor cachingdoeleinden.
 
 Achterliggend doet deze een get request naar de function(s) <br>
-Input: url?code=xxx&animal=xxx <br>
+Input: url?animal=xxx <br>
 Output: "data": [{ "image": "data:image/png;base64," + base64 }]
 
 Hieronder zijn de instructies voor het deployment, lees eerst beide opties voor je vertrekt met een van beiden voor frustraties te vermijden.
