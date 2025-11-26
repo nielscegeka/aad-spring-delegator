@@ -14,6 +14,8 @@ Prerequisites:
 - Opzetten van een Azure omgeving met subscription
 - Opzetten van de Azure Functions (evt in DEV_MODE voor testing)
 - Opzetten van de OpenAI Images (Optioneel)
+- Opzetten van Azure Storage Account
+- Opzetten van de BlobContainer voor het opslaan van Blobs (Optioneel, service maakt er eentje aan als die onbestaande is)
 
 (Indien je al een bestaande subscription gebruikt die NIET deel uitmaakt van de Free Tier)
 Stappenplan:
@@ -30,7 +32,7 @@ Stappenplan:
 3: Binnen de Azure CLI (Of lokaal na az login): az acr credential show --name <acr-name>
 3.1: Indien dit commando eerste maal faalt: az acr update -n <acr-name> --admin-enabled true
 4: Vul de credentials in de pom.xml 
-5: mvn -X clean package compile jib:build (Dit pusht de lokale spring image naar de ACR)
+5: mvn -X clean package compile jib:build -Dspring.profiles.active=<profile> (Dit pusht de lokale spring image naar de ACR)
 5.1: Kijken of de push geslaagd is: az acr repository list --name <acr-name> --output table
 6: Maak een Container App Environment (Verzameling van Containers voor communicatie evt.): az containerapp env create --name <env-name> --resource-group <resource-group> --location <region>
 7: Maak een Container App: az containerapp create --name <app-name> --resource-group <resource-group> --environment <env-name> --image <acr-name>.azurecr.io/<image-name> --target-port 8080 --ingress external --registry-server <acr-name>.azurecr.io --registry-username <acr-user> --registry-password <acr-pwd>
@@ -38,8 +40,10 @@ Stappenplan:
 Normaal kan je vanaf dan aan je spring boot applicatie, de url van de spring boot applicatie zie je binnen de Container App in de Azure Portal. Hier kan je ook rechtstreeks aan de logs.
 
 Voor het verder automatiseren van updates:
-1: az containerapp update --name <app-name> --resource-group <resource-group> --image <acr-name>.azurecr.io/<image-name> --registry-server <acr-name>.azurecr.io --registry-username <acr-user> --registry-password <acr-pwd>
+1: az containerapp update --name <app-name> --resource-group <resource-group> --image <acr-name>.azurecr.io/<image-name>
 
 ? Kan je gebruik maken van docker ? Ja, je kan ook je image uploaden naar hub.docker.io en daarmee connecteren. Deze oplossing is puur Azure gericht en zonder Docker. <br>
 ? Heb je Azure CLI nodig ? Nee, binnen het Azure Portaal heb je een terminal waarmee je alle commando's kan uitvoeren. <br>
-? Hoe call ik mijn Spring boot App ? Alles is binnen handbereik als je naar je container-app gaat. De url is in overview te vinden, de logs binnen Application > Revisions & Replicas
+? Hoe call ik mijn Spring boot App ? Alles is binnen handbereik als je naar je container-app gaat. De url is in overview te vinden, de logs binnen Application > Revisions & Replicas <br>
+? Waar is de waarde voor azure.storage.connection-string te vinden ? Binnen je Storage Account > Zoekbalk > Access & Keys (Connection-string zal het formaat hebben van een database connectionstring) <br>
+? Waarom een dev spring profile ? Lokaal testen via een In-Memory cache ook als mogelijkheid te houden, als je nog geen Azure Storage hebt opgezet

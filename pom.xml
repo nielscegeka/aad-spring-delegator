@@ -56,6 +56,19 @@
             <artifactId>reactor-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-storage-blob</artifactId>
+            <version>12.30.0</version>
+        </dependency>
     </dependencies>
 
     <packaging>jar</packaging>
@@ -146,8 +159,11 @@
                             <port>8080</port>
                         </ports>
                         <environment>
+                            <SPRING_PROFILES_ACTIVE>dev/prod</SPRING_PROFILES_ACTIVE>
                             <image.function.url>https://function-name.azurewebsites.net/api/endpoint</image.function.url>
                             <image.function.code>your-function-code</image.function.code>
+                            <azure.storage.connection-string>full-connection-string-no-url!</azure.storage.connection-string>
+                            <azure.storage.container-name>container-name</azure.storage.container-name>
                         </environment>
                     </container>
                 </configuration>
