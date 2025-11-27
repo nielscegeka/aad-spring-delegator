@@ -162,6 +162,7 @@
                             <SPRING_PROFILES_ACTIVE>dev/prod</SPRING_PROFILES_ACTIVE>
                             <image.function.url>https://function-name.azurewebsites.net/api/endpoint</image.function.url>
                             <image.function.code>your-function-code</image.function.code>
+                            <react.frontend.url>your-static-website</react.frontend.url>
                             <azure.storage.connection-string>full-connection-string-no-url!</azure.storage.connection-string>
                             <azure.storage.container-name>container-name</azure.storage.container-name>
                         </environment>
